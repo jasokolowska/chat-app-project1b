@@ -63,7 +63,9 @@ public class ChatClient {
                 connection.close();
                 System.exit(0);
             } else if(messageToSend.equals("room")){
-                chatController.createChatRoom(new ChatRoomDto(UUID.randomUUID().toString(), "new room"));
+                ChatRoomDto chatRoom = new ChatRoomDto(UUID.randomUUID().toString(), "New chat room");
+                Message message = session.createObjectMessage(chatRoom);
+                publisher.publish(message);
             } else {
                 TextMessage message = session.createTextMessage("[" + username + "]: " + messageToSend);
                 publisher.publish(message);
