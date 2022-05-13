@@ -11,9 +11,7 @@ import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
@@ -62,14 +60,29 @@ public class ChatClient {
             if (messageToSend.equals("exit")){
                 connection.close();
                 System.exit(0);
-            } else if(messageToSend.equals("room")){
+            } else if(messageToSend.equals("room")) {
                 ChatRoomDto chatRoom = new ChatRoomDto(UUID.randomUUID().toString(), "New chat room");
                 Message message = session.createObjectMessage(chatRoom);
+                publisher.publish(message);
+            } else if(messageToSend.startsWith("send")) {
+                String path = messageToSend.split(" ")[1];
+                System.out.println("Print path: " + path);
+                File file = new File(path);
+                BytesMessage message = session.createBytesMessage();
+                message.writeBytes(readfileAsBytes(file));
                 publisher.publish(message);
             } else {
                 TextMessage message = session.createTextMessage("[" + username + "]: " + messageToSend);
                 publisher.publish(message);
             }
+        }
+    }
+
+    public byte[] readfileAsBytes(File file) throws IOException {
+        try (RandomAccessFile accessFile = new RandomAccessFile(file, "r")) {
+            byte[] bytes = new byte[(int) accessFile.length()];
+            accessFile.readFully(bytes);
+            return bytes;
         }
     }
 }
