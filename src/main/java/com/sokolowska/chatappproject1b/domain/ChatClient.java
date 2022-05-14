@@ -66,23 +66,16 @@ public class ChatClient {
                 publisher.publish(message);
             } else if(messageToSend.startsWith("send")) {
                 String path = messageToSend.split(" ")[1];
-                System.out.println("Print path: " + path);
                 File file = new File(path);
                 BytesMessage message = session.createBytesMessage();
-                message.writeBytes(readfileAsBytes(file));
+                message.setStringProperty("fileName", file.getName());
+                message.setStringProperty("username", username);
+                message.writeBytes(FileManager.readfileAsBytes(file));
                 publisher.publish(message);
             } else {
                 TextMessage message = session.createTextMessage("[" + username + "]: " + messageToSend);
                 publisher.publish(message);
             }
-        }
-    }
-
-    public byte[] readfileAsBytes(File file) throws IOException {
-        try (RandomAccessFile accessFile = new RandomAccessFile(file, "r")) {
-            byte[] bytes = new byte[(int) accessFile.length()];
-            accessFile.readFully(bytes);
-            return bytes;
         }
     }
 }
