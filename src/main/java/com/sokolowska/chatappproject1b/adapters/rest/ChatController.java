@@ -1,5 +1,6 @@
 package com.sokolowska.chatappproject1b.adapters.rest;
 
+import com.sokolowska.chatappproject1b.domain.ChatRoom;
 import com.sokolowska.chatappproject1b.ports.ChatRoomService;
 import jakarta.inject.Inject;
 
@@ -27,7 +28,7 @@ public class ChatController {
 
     @POST
     public Response createChatRoom(ChatRoomDto chatRoomDto){
-        var chatRoom = chatRoomMapper.toDomain(chatRoomDto);
+        ChatRoom chatRoom = chatRoomMapper.toDomain(chatRoomDto);
 //        chatRoomService.save(chatRoom);
         return Response.created(getLocation(chatRoomDto.getId()))
                 .entity(chatRoomDto)

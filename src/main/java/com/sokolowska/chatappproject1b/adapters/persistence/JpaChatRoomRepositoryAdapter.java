@@ -21,8 +21,8 @@ public class JpaChatRoomRepositoryAdapter implements ChatRoomRepository {
 
     @Override
     public ChatRoom save(ChatRoom chatRoom) {
-        var entity = chatRoomMapper.toEntity(chatRoom);
-        var persistedEntity = chatRoomRepository.save(entity);
+        ChatRoomEntity entity = chatRoomMapper.toEntity(chatRoom);
+        ChatRoomEntity persistedEntity = chatRoomRepository.save(entity);
         return chatRoomMapper.toDomain(persistedEntity);
     }
 

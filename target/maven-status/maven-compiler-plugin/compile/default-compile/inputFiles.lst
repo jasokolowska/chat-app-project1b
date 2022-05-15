@@ -1,7 +1,9 @@
 C:\Development\Lufthansa\chat-app-project1b\src\main\java\com\sokolowska\chatappproject1b\adapters\persistence\JpaPersistenceChatRoomMapper.java
+C:\Development\Lufthansa\chat-app-project1b\src\main\java\com\sokolowska\chatappproject1b\domain\FileManager.java
 C:\Development\Lufthansa\chat-app-project1b\src\main\java\com\sokolowska\chatappproject1b\ports\ChatRoomRepository.java
 C:\Development\Lufthansa\chat-app-project1b\src\main\java\com\sokolowska\chatappproject1b\adapters\persistence\JpaChatRoomRepository.java
 C:\Development\Lufthansa\chat-app-project1b\src\main\java\com\sokolowska\chatappproject1b\adapters\persistence\JpaChatRoomRepositoryAdapter.java
+C:\Development\Lufthansa\chat-app-project1b\src\main\java\com\sokolowska\chatappproject1b\domain\ChatMessage.java
 C:\Development\Lufthansa\chat-app-project1b\src\main\java\com\sokolowska\chatappproject1b\domain\ChatService.java
 C:\Development\Lufthansa\chat-app-project1b\src\main\java\com\sokolowska\chatappproject1b\adapters\persistence\ChatRoomEntity.java
 C:\Development\Lufthansa\chat-app-project1b\src\main\java\com\sokolowska\chatappproject1b\adapters\rest\ChatRoomDto.java

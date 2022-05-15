@@ -1,4 +1,6 @@
+com\sokolowska\chatappproject1b\domain\FileManager.class
 com\sokolowska\chatappproject1b\domain\ChatClient.class
+com\sokolowska\chatappproject1b\domain\ChatMessage.class
 com\sokolowska\chatappproject1b\domain\ChatRoom.class
 com\sokolowska\chatappproject1b\domain\ChatService.class
 com\sokolowska\chatappproject1b\ChatApplication.class

@@ -2,36 +2,43 @@ package com.sokolowska.chatappproject1b.domain;
 
 import com.sokolowska.chatappproject1b.adapters.rest.ChatController;
 import com.sokolowska.chatappproject1b.adapters.rest.ChatRoomDto;
-import jakarta.inject.Inject;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.io.*;
 import java.net.UnknownHostException;
+import java.util.Properties;
 import java.util.UUID;
 
-@NoArgsConstructor
-@AllArgsConstructor(onConstructor_ = @Inject)
+
 @RequestScoped
 public class ChatClient {
+
+//    java.naming.factory.initial=org.wildfly.naming.client.WildFlyInitialContextFactory
+//    java.naming.provider.url=http-remoting://localhost:8080
+//    jboss.naming.client.ejb.context=true
 
     public static final String TOPIC = "jms/topic/Messages";
 
     @Inject
-    private ChatController chatController;
+    public static ChatService chatService;
 
     public static void main(String[] args) throws JMSException, IOException, NamingException {
         if (args.length != 1) {
-            System.out.println("Username is required");
         } else {
             String username = args[0];
-            ChatClient chatServer = new ChatClient(new ChatController());
-            Context context = new InitialContext();
+            ChatClient chatServer = new ChatClient();
+            Properties props = new Properties();
+            props.setProperty("java.naming.factory.initial", "org.wildfly.naming.client.WildFlyInitialContextFactory");
+            props.setProperty("java.naming.provider.url", "http-remoting://localhost:8080");
+            props.setProperty("jboss.naming.client.ejb.context", "true");
+            Context context = new InitialContext(props);
             Topic topic = (Topic) context.lookup(ChatClient.TOPIC);
             ConnectionFactory connectionFactory = (ConnectionFactory) context.lookup("jms/RemoteConnectionFactory");
             Connection connection = connectionFactory.createConnection();
@@ -45,7 +52,7 @@ public class ChatClient {
         Session session = connection.createSession();
 
         TopicSubscriber subscriber = session.createDurableSubscriber(topic, "chat room");
-        subscriber.setMessageListener(new ChatService());
+        subscriber.setMessageListener(chatService);
     }
 
     public void publish(Connection connection, Topic topic, String username) throws JMSException, IOException {

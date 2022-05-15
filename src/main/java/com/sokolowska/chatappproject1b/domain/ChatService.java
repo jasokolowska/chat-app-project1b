@@ -1,12 +1,15 @@
 package com.sokolowska.chatappproject1b.domain;
 
+import com.sokolowska.chatappproject1b.adapters.persistence.JpaChatMessageRepository;
 import com.sokolowska.chatappproject1b.adapters.rest.ChatRoomDto;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.*;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -24,8 +27,8 @@ import java.time.LocalDateTime;
 public class ChatService implements MessageListener {
 
 //    private Client client = ClientBuilder.newClient();
-//    @Inject
-//    private EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public void onMessage(Message message) {
@@ -45,7 +48,8 @@ public class ChatService implements MessageListener {
             } else {
                 //TODO: add saving message in the db
                 System.out.println(((TextMessage) message).getText());
-//                entityManager.persist(new ChatMessage());
+                ChatMessage chatMessage = new ChatMessage(1L, ((TextMessage) message).getText(), "sender", "chatroom");
+                entityManager.persist(chatMessage);
             }
         } catch (JMSException e) {
             e.printStackTrace();
