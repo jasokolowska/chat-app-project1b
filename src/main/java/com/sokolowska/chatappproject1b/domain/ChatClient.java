@@ -1,17 +1,18 @@
 package com.sokolowska.chatappproject1b.domain;
 
-import com.sokolowska.chatappproject1b.adapters.rest.ChatController;
 import com.sokolowska.chatappproject1b.adapters.rest.ChatRoomDto;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+
+
 
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.UnknownHostException;
 import java.util.Properties;
 import java.util.UUID;
@@ -20,42 +21,35 @@ import java.util.UUID;
 @RequestScoped
 public class ChatClient {
 
-//    java.naming.factory.initial=org.wildfly.naming.client.WildFlyInitialContextFactory
-//    java.naming.provider.url=http-remoting://localhost:8080
-//    jboss.naming.client.ejb.context=true
-
     public static final String TOPIC = "jms/topic/Messages";
-
-    @Inject
-    public static ChatService chatService;
 
     public static void main(String[] args) throws JMSException, IOException, NamingException {
         if (args.length != 1) {
         } else {
             String username = args[0];
-            ChatClient chatServer = new ChatClient();
             Properties props = new Properties();
             props.setProperty("java.naming.factory.initial", "org.wildfly.naming.client.WildFlyInitialContextFactory");
             props.setProperty("java.naming.provider.url", "http-remoting://localhost:8080");
             props.setProperty("jboss.naming.client.ejb.context", "true");
             Context context = new InitialContext(props);
+
             Topic topic = (Topic) context.lookup(ChatClient.TOPIC);
             ConnectionFactory connectionFactory = (ConnectionFactory) context.lookup("jms/RemoteConnectionFactory");
             Connection connection = connectionFactory.createConnection();
             connection.setClientID(username);
-            chatServer.subscribe(connection, topic, chatServer);
-            chatServer.publish(connection, topic, username);
+            subscribe(connection, topic);
+            publish(connection, topic, username);
         }
     }
 
-    public void subscribe(Connection connection, Topic topic, ChatClient chatServer) throws JMSException, UnknownHostException {
+    public static void subscribe(Connection connection, Topic topic) throws JMSException, UnknownHostException {
         Session session = connection.createSession();
 
         TopicSubscriber subscriber = session.createDurableSubscriber(topic, "chat room");
-        subscriber.setMessageListener(chatService);
+        subscriber.setMessageListener(new ChatMessageListener());
     }
 
-    public void publish(Connection connection, Topic topic, String username) throws JMSException, IOException {
+    public static void publish(Connection connection, Topic topic, String username) throws JMSException, IOException {
         Session session = connection.createSession();
         TopicPublisher publisher = (TopicPublisher) session.createProducer(topic);
         connection.start();
@@ -68,7 +62,7 @@ public class ChatClient {
                 connection.close();
                 System.exit(0);
             } else if(messageToSend.equals("room")) {
-                ChatRoomDto chatRoom = new ChatRoomDto(UUID.randomUUID().toString(), "New chat room");
+                ChatRoomDto chatRoom = new ChatRoomDto(1L, "New chat room");
                 Message message = session.createObjectMessage(chatRoom);
                 publisher.publish(message);
             } else if(messageToSend.startsWith("send")) {

@@ -6,7 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-05-15T11:44:19+0200",
+    date = "2022-05-28T21:45:55+0200",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.1 (Oracle Corporation)"
 )
 @ApplicationScoped
@@ -20,6 +20,8 @@ public class ChatRoomMapperImpl implements ChatRoomMapper {
 
         ChatRoom chatRoom = new ChatRoom();
 
+        chatRoom.setName( chatRoomDto.getName() );
+
         return chatRoom;
     }
 
@@ -30,6 +32,9 @@ public class ChatRoomMapperImpl implements ChatRoomMapper {
         }
 
         ChatRoomDto chatRoomDto = new ChatRoomDto();
+
+        chatRoomDto.setId( chatRoom.getId() );
+        chatRoomDto.setName( chatRoom.getName() );
 
         return chatRoomDto;
     }

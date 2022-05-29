@@ -1,4 +1,3 @@
-com\sokolowska\chatappproject1b\domain\FileManager.class
 com\sokolowska\chatappproject1b\domain\ChatClient.class
 com\sokolowska\chatappproject1b\domain\ChatMessage.class
 com\sokolowska\chatappproject1b\domain\ChatRoom.class
@@ -6,12 +5,18 @@ com\sokolowska\chatappproject1b\domain\ChatService.class
 com\sokolowska\chatappproject1b\ChatApplication.class
 com\sokolowska\chatappproject1b\adapters\rest\ChatRoomMapperImpl.class
 com\sokolowska\chatappproject1b\adapters\persistence\ChatRoomEntity.class
-com\sokolowska\chatappproject1b\adapters\rest\ChatController.class
 com\sokolowska\chatappproject1b\adapters\persistence\JpaPersistenceChatRoomMapper.class
 com\sokolowska\chatappproject1b\ports\ChatRoomRepository.class
-com\sokolowska\chatappproject1b\adapters\rest\ChatRoomDto.class
-com\sokolowska\chatappproject1b\adapters\rest\ChatRoomMapper.class
+com\sokolowska\chatappproject1b\domain\ChatServer.class
 com\sokolowska\chatappproject1b\adapters\persistence\JpaPersistenceChatRoomMapperImpl.class
+com\sokolowska\chatappproject1b\domain\BinaryMapper.class
+com\sokolowska\chatappproject1b\domain\FileManager.class
+com\sokolowska\chatappproject1b\adapters\persistence\JpaChatMessageRepository.class
+com\sokolowska\chatappproject1b\domain\ChatMessageListener.class
+com\sokolowska\chatappproject1b\adapters\rest\ChatController.class
+com\sokolowska\chatappproject1b\adapters\rest\ChatRoomDto.class
+com\sokolowska\chatappproject1b\domain\ChatRoomServiceImpl.class
+com\sokolowska\chatappproject1b\adapters\rest\ChatRoomMapper.class
 com\sokolowska\chatappproject1b\adapters\persistence\JpaChatRoomRepositoryAdapter.class
 com\sokolowska\chatappproject1b\ports\ChatRoomService.class
 com\sokolowska\chatappproject1b\adapters\persistence\JpaChatRoomRepository.class
